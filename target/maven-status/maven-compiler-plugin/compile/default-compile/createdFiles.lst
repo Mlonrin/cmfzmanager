@@ -1,0 +1,3 @@
+com\baizhi\cmfz\lucene\impl\LuceneDaoImpl.class
+com\baizhi\cmfz\lucene\LuceneDao.class
+com\baizhi\cmfz\util\LuceneUtil.class

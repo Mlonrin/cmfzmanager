@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.GuruMapper" >
+  <resultMap id="BaseResultMap" type="com.baizhi.cmfz.entity.Guru" >
+    <id column="guru_id" property="guruId" jdbcType="INTEGER" />
+    <result column="guru_name" property="guruName" jdbcType="VARCHAR" />
+    <result column="guru_image" property="guruImage" jdbcType="VARCHAR" />
+    <result column="guru_nickname" property="guruNickname" jdbcType="VARCHAR" />
+    <result column="guru_status" property="guruStatus" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    guru_id, guru_name, guru_image, guru_nickname, guru_status
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cmfz_guru
+    where guru_id = #{guruId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cmfz_guru
+    where guru_id = #{guruId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.baizhi.cmfz.entity.Guru" >
+    insert into cmfz_guru (guru_id, guru_name, guru_image, 
+      guru_nickname, guru_status)
+    values (#{guruId,jdbcType=INTEGER}, #{guruName,jdbcType=VARCHAR}, #{guruImage,jdbcType=VARCHAR}, 
+      #{guruNickname,jdbcType=VARCHAR}, #{guruStatus,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.baizhi.cmfz.entity.Guru" >
+    insert into cmfz_guru
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="guruId != null" >
+        guru_id,
+      </if>
+      <if test="guruName != null" >
+        guru_name,
+      </if>
+      <if test="guruImage != null" >
+        guru_image,
+      </if>
+      <if test="guruNickname != null" >
+        guru_nickname,
+      </if>
+      <if test="guruStatus != null" >
+        guru_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="guruId != null" >
+        #{guruId,jdbcType=INTEGER},
+      </if>
+      <if test="guruName != null" >
+        #{guruName,jdbcType=VARCHAR},
+      </if>
+      <if test="guruImage != null" >
+        #{guruImage,jdbcType=VARCHAR},
+      </if>
+      <if test="guruNickname != null" >
+        #{guruNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="guruStatus != null" >
+        #{guruStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.baizhi.cmfz.entity.Guru" >
+    update cmfz_guru
+    <set >
+      <if test="guruName != null" >
+        guru_name = #{guruName,jdbcType=VARCHAR},
+      </if>
+      <if test="guruImage != null" >
+        guru_image = #{guruImage,jdbcType=VARCHAR},
+      </if>
+      <if test="guruNickname != null" >
+        guru_nickname = #{guruNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="guruStatus != null" >
+        guru_status = #{guruStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where guru_id = #{guruId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.baizhi.cmfz.entity.Guru" >
+    update cmfz_guru
+    set guru_name = #{guruName,jdbcType=VARCHAR},
+      guru_image = #{guruImage,jdbcType=VARCHAR},
+      guru_nickname = #{guruNickname,jdbcType=VARCHAR},
+      guru_status = #{guruStatus,jdbcType=INTEGER}
+    where guru_id = #{guruId,jdbcType=INTEGER}
+  </update>
+
+  <insert id="multiInsert">
+
+    insert into cmfz_guru(guru_name, guru_image, guru_nickname, guru_status)
+    <foreach collection="gurus" item="guru" open="values" separator="," index=";">
+      (#{guru.guruName},#{guru.guruImage},#{guru.guruNickname},#{guru.guruStatus})
+    </foreach>
+
+  </insert>
+
+</mapper>

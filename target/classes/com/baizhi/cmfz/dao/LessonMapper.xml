@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.LessonMapper" >
+  <resultMap id="BaseResultMap" type="com.baizhi.cmfz.entity.Lesson" >
+    <id column="lesson_id" property="lessonId" jdbcType="INTEGER" />
+    <result column="lesson_name" property="lessonName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="lesson_status" property="lessonStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    lesson_id, lesson_name, user_id, lesson_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cmfz_lesson
+    where lesson_id = #{lessonId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cmfz_lesson
+    where lesson_id = #{lessonId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baizhi.cmfz.entity.Lesson" >
+    insert into cmfz_lesson (lesson_id, lesson_name, user_id, 
+      lesson_status)
+    values (#{lessonId,jdbcType=INTEGER}, #{lessonName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{lessonStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baizhi.cmfz.entity.Lesson" >
+    insert into cmfz_lesson
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lessonId != null" >
+        lesson_id,
+      </if>
+      <if test="lessonName != null" >
+        lesson_name,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="lessonStatus != null" >
+        lesson_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lessonId != null" >
+        #{lessonId,jdbcType=INTEGER},
+      </if>
+      <if test="lessonName != null" >
+        #{lessonName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="lessonStatus != null" >
+        #{lessonStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baizhi.cmfz.entity.Lesson" >
+    update cmfz_lesson
+    <set >
+      <if test="lessonName != null" >
+        lesson_name = #{lessonName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="lessonStatus != null" >
+        lesson_status = #{lessonStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where lesson_id = #{lessonId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baizhi.cmfz.entity.Lesson" >
+    update cmfz_lesson
+    set lesson_name = #{lessonName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      lesson_status = #{lessonStatus,jdbcType=INTEGER}
+    where lesson_id = #{lessonId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectAll" resultMap="orm2">
+    select *
+    from cmfz_lesson t1
+    where t1.user_id is null
+  </select>
+
+  <select id="selectByUserId" resultMap="orm2">
+    select *
+    from cmfz_lesson t1
+    where t1.user_id = #{userId}
+  </select>
+
+  <resultMap id="orm2" type="com.baizhi.cmfz.entity.Lesson">
+    <result column="lesson_id" property="lessonId"/>
+    <result column="lesson_name" property="lessonName"/>
+    <result column="user_id" property="userId"/>
+    <result column="lesson_status" property="lessonStatus"/>
+  </resultMap>
+
+</mapper>

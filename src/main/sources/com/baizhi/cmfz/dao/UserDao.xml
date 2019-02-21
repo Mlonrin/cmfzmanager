@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.UserDao" >
+
+  <insert id="multiInsert">
+    insert into cmfz_user(telphone, password, user_image, nickname, name, sex, autograph, user_province, user_city, guru_id, user_status,create_time)
+    <foreach collection="userList" item="user" open="values" separator="," close="">
+      (#{user.telphone},#{user.password},#{user.userImage},#{user.nickname},#{user.name},#{user.sex},#{user.autograph},#{user.userProvince},#{user.userCity},#{user.guruId},#{user.userStatus},#{user.createTime})
+    </foreach>
+  </insert>
+
+  <insert id="insertOne">
+    insert into cmfz_user(telphone, password, user_image, nickname, name, sex, autograph, user_province, user_city, guru_id, user_status, create_time)
+    values (#{user.telphone},#{user.password},#{user.userImage},#{user.nickname},#{user.name},#{user.sex},#{user.autograph},#{user.userProvince},#{user.userCity},#{user.guruId},#{user.userStatus},#{user.createTime})
+  </insert>
+
+  <select id="getCountBySex" resultMap="orm1">
+    select sex,COUNT(1) count
+    FROM cmfz_user
+    group by sex
+  </select>
+
+  <resultMap id="orm1" type="java.util.Map">
+    <result property="key" column="sex" javaType="java.lang.String"/>
+    <result property="value" column="count" javaType="java.lang.Object"/>
+  </resultMap>
+
+  <select id="getCountSex" resultType="int">
+    select count(1) from cmfz_user where sex = '女'
+    union
+    select count(1) from cmfz_user where sex = '男'
+  </select>
+
+
+
+  <select id="selectByDate" resultType="int">
+    select count(1)
+    from cmfz_user t
+    where datediff(now(),t.create_time) between 15 and 21
+    union
+    select count(1)
+    from cmfz_user t
+    where datediff(now(),t.create_time) between 8 and 14
+    union
+    select count(1)
+    from cmfz_user t
+    where datediff(now(),t.create_time) between 1 and 7
+  </select>
+
+  <select id="selectProvince" resultMap="orm4">
+    SELECT user_province,count(1) count
+    FROM cmfz_user t
+    GROUP BY t.user_province
+  </select>
+
+  <select id="selectProvince1" resultType="java.util.HashMap">
+    SELECT user_province name,count(1) value
+    FROM cmfz_user t
+    GROUP BY t.user_province
+  </select>
+
+  <resultMap id="orm4" type="com.baizhi.cmfz.entity.MapDTO">
+    <result column="user_province" property="province"/>
+    <result column="count" property="count"/>
+  </resultMap>
+
+  <update id="updateUserInfo" parameterType="com.baizhi.cmfz.entity.User" >
+    update cmfz_user
+    <set >
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userImage != null" >
+        user_image = #{userImage,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="autograph != null" >
+        autograph = #{autograph,jdbcType=VARCHAR},
+      </if>
+      <if test="userProvince != null" >
+        user_province = #{userProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null" >
+        user_city = #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="guruId != null" >
+        guru_id = #{guruId,jdbcType=INTEGER},
+      </if>
+      <if test="userStatus != null" >
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updatePassword">
+    update cmfz_user set password = #{password} where user_id = #{userId}
+  </update>
+
+</mapper>

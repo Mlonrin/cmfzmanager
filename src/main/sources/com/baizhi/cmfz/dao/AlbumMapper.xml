@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.cmfz.dao.AlbumDao" >
+
+    <insert id="addAlbum">
+        insert into cmfz_album(album_name, album_author, album_teller,album_date,album_content, album_image, album_star)
+        values (#{albumName},#{albumAuthor},#{albumTeller},sysdate(),#{albumContent},#{albumImage},#{albumStar})
+    </insert>
+
+    <update id="multiDelete">
+        delete from cmfz_album where album_id in
+        <foreach collection="array" item="id" open="(" separator="," close=")" >
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="update">
+        update cmfz_album set album_name = #{albumName},
+                               album_author = #{albumAuthor},
+                               album_teller = #{albumTeller},
+                               album_Episodes = #{albumEpisodes},
+                               album_content = #{albumContent},
+                               album_image = #{albumImage},
+                               album_star = #{albumStar}
+                               where album_id = #{albumId}
+    </update>
+
+    <update id="updateEpisodes">
+        update cmfz_album set album_Episodes = #{episodes} where album_id = #{id}
+    </update>
+
+    <select id="selectByPage" resultMap="rmp1">
+        select *
+        from cmfz_album
+        where album_name like #{name}
+        limit #{start} , #{rows}
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(1)
+        from cmfz_album
+        where album_name like #{name}
+    </select>
+
+
+
+    <resultMap id="rmp1" type="com.baizhi.cmfz.entity.Album">
+        <result column="album_id" property="albumId"/>
+        <result column="album_name" property="albumName"/>
+        <result column="album_author" property="albumAuthor"/>
+        <result column="album_teller" property="albumTeller"/>
+        <result column="album_Episodes" property="albumEpisodes"/>
+        <result column="album_date" property="albumDate"/>
+        <result column="album_content" property="albumContent"/>
+        <result column="album_image" property="albumImage"/>
+        <result column="album_star" property="albumStar"/>
+    </resultMap>
+
+
+    <select id="selectAll" resultMap="orm2">
+        select
+        t1.*,
+        t2.*
+        from cmfz_album t1
+        inner join cmfz_audio t2
+        on t1.album_id = t2.album_id
+        ORDER BY t2.audio_order
+    </select>
+
+    <select id="getById" resultMap="orm2">
+        select
+        t1.*,
+        t2.*
+        from cmfz_album t1
+        inner join cmfz_audio t2
+        on t1.album_id = t2.album_id
+        where t1.album_id = #{albumId}
+        ORDER BY t2.audio_order
+    </select>
+
+    <resultMap id="orm2" type="com.baizhi.cmfz.entity.Album">
+        <result column="album_id" property="albumId" />
+        <result column="album_name" property="albumName" />
+        <result column="album_author" property="albumAuthor" />
+        <result column="album_teller" property="albumTeller" />
+        <result column="album_Episodes" property="albumEpisodes" />
+        <result column="album_date" property="albumDate" />
+        <result column="album_content" property="albumContent" />
+        <result column="album_image" property="albumImage" />
+        <result column="album_star" property="albumStar" />
+        <collection property="children" ofType="com.baizhi.cmfz.entity.Audio">
+            <result column="audio_id" property="audioId"/>
+            <result column="audio_name" property="audioName"/>
+            <result column="audio_url" property="audioUrl"/>
+            <result column="audio_size" property="audioSize"/>
+            <result column="audio_order" property="audioOrder"/>
+        </collection>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.CounterMapper" >
+  <resultMap id="BaseResultMap" type="com.baizhi.cmfz.entity.Counter" >
+    <id column="counter_id" property="counterId" jdbcType="INTEGER" />
+    <result column="counter_name" property="counterName" jdbcType="VARCHAR" />
+    <result column="counter_date" property="counterDate" jdbcType="TIMESTAMP" />
+    <result column="lesson_id" property="lessonId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="counter_count" property="counterCount" jdbcType="INTEGER" />
+    <result column="counter_status" property="counterStatus" jdbcType="INTEGER" />
+  </resultMap>
+
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from cmfz_counter
+    where user_id = #{userId} and lesson_id = #{lessonId}
+  </select>
+
+  <sql id="Base_Column_List" >
+    counter_id, counter_name, counter_date, lesson_id, user_id, counter_count, counter_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cmfz_counter
+    where counter_id = #{counterId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cmfz_counter
+    where counter_id = #{counterId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baizhi.cmfz.entity.Counter" >
+    insert into cmfz_counter (counter_id, counter_name, counter_date, 
+      lesson_id, user_id, counter_count, 
+      counter_status)
+    values (#{counterId,jdbcType=INTEGER}, #{counterName,jdbcType=VARCHAR}, #{counterDate,jdbcType=TIMESTAMP}, 
+      #{lessonId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{counterCount,jdbcType=INTEGER}, 
+      #{counterStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baizhi.cmfz.entity.Counter" >
+    insert into cmfz_counter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="counterId != null" >
+        counter_id,
+      </if>
+      <if test="counterName != null" >
+        counter_name,
+      </if>
+      <if test="counterDate != null" >
+        counter_date,
+      </if>
+      <if test="lessonId != null" >
+        lesson_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="counterCount != null" >
+        counter_count,
+      </if>
+      <if test="counterStatus != null" >
+        counter_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="counterId != null" >
+        #{counterId,jdbcType=INTEGER},
+      </if>
+      <if test="counterName != null" >
+        #{counterName,jdbcType=VARCHAR},
+      </if>
+      <if test="counterDate != null" >
+        #{counterDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lessonId != null" >
+        #{lessonId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="counterCount != null" >
+        #{counterCount,jdbcType=INTEGER},
+      </if>
+      <if test="counterStatus != null" >
+        #{counterStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baizhi.cmfz.entity.Counter" >
+    update cmfz_counter
+    <set >
+      <if test="counterName != null" >
+        counter_name = #{counterName,jdbcType=VARCHAR},
+      </if>
+      <if test="counterDate != null" >
+        counter_date = #{counterDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lessonId != null" >
+        lesson_id = #{lessonId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="counterCount != null" >
+        counter_count = #{counterCount,jdbcType=INTEGER},
+      </if>
+      <if test="counterStatus != null" >
+        counter_status = #{counterStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where counter_id = #{counterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baizhi.cmfz.entity.Counter" >
+    update cmfz_counter
+    set counter_name = #{counterName,jdbcType=VARCHAR},
+      counter_date = #{counterDate,jdbcType=TIMESTAMP},
+      lesson_id = #{lessonId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      counter_count = #{counterCount,jdbcType=INTEGER},
+      counter_status = #{counterStatus,jdbcType=INTEGER}
+    where counter_id = #{counterId,jdbcType=INTEGER}
+  </update>
+</mapper>
