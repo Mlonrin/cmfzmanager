@@ -10,6 +10,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+  *远程修改测试添加的注解
+  */
 @SpringBootApplication
 @MapperScan("com.baizhi.cmfz.dao")
 public class AppRun {
